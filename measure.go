@@ -28,12 +28,14 @@ func collectMeasurements(opts *options) (*collectedMeasurements, error) {
 		}
 		m, err := parseStartuptime(f)
 		if err != nil {
+			f.Close()
 			return nil, err
 		}
 		collected.total = append(collected.total, m.elapsedTotal)
 		for _, e := range m.entries {
 			collected.entries[e.name] = append(collected.entries[e.name], e.total)
 		}
+		f.Close()
 	}
 
 	return collected, nil
