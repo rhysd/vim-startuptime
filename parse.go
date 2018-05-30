@@ -29,8 +29,8 @@ func parseStartuptimeEntity(line string, lineno uint) (*measurementEntry, error)
 	e := &measurementEntry{}
 
 	ss := strings.Fields(line)
-	if len(ss) <= 1 {
-		return nil, parseErrorAt(lineno, "Unexpected empty line at '%s'", line)
+	if len(ss) <= 2 {
+		return nil, parseErrorAt(lineno, "Lack of fields: '%s'", line)
 	}
 
 	d, err := parseDuration(ss[0], lineno)
@@ -54,7 +54,7 @@ func parseStartuptimeEntity(line string, lineno uint) (*measurementEntry, error)
 
 	e.script = true
 	if len(ss) < 5 {
-		return nil, parseErrorAt(lineno, "Failed to parse script measurement line '%s'. Too few tokens", line)
+		return nil, parseErrorAt(lineno, "Failed to parse script measurement line '%s'. Too few fields", line)
 	}
 
 	d, err = parseDuration(ss[2], lineno)

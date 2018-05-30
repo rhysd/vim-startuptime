@@ -15,7 +15,7 @@ func TestRunVimOK(t *testing.T) {
 	}
 	defer os.RemoveAll(dir)
 
-	f, err := runVimStartuptime("vim", dir, 3, []string{})
+	f, err := runVimStartuptime("vim", dir, 3, []string{"-u", "NONE", "-N"})
 	if err != nil {
 		t.Fatal(err)
 	}

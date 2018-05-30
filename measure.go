@@ -62,8 +62,14 @@ func averageDuration(ds []time.Duration) time.Duration {
 func measureAverageStartuptime(collected *collectedMeasurements) (*averageMeasurement, error) {
 	average := &averageMeasurement{}
 	average.sortedEntries = make([]averageEntry, 0, len(collected.entries))
+	if len(collected.total) == 0 {
+		return nil, fmt.Errorf("No total time was collected")
+	}
 	average.total = averageDuration(collected.total)
 	for n, ds := range collected.entries {
+		if len(ds) == 0 {
+			return nil, fmt.Errorf("No profile was collected for '%s'", n)
+		}
 		average.sortedEntries = append(average.sortedEntries, averageEntry{n, averageDuration(ds)})
 	}
 

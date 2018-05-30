@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"io/ioutil"
 	"os"
 	"reflect"
@@ -159,6 +160,112 @@ times in msec
 				if !reflect.DeepEqual(have, want) {
 					t.Errorf("%dth entry not match. Want '%+v', but have '%+v'", i, want, have)
 				}
+			}
+		})
+	}
+}
+
+func TestParseErrors(t *testing.T) {
+	tmpfile, err := ioutil.TempFile("", "__test_parse_errors")
+	if err != nil {
+		panic(err)
+	}
+	tmpname := tmpfile.Name()
+	tmpfile.Close()
+	defer func() {
+		os.Remove(tmpname)
+	}()
+
+	header := []string{
+		"",
+		"",
+		"times in msec",
+		"clock   self+sourced   self:  sourced script",
+		"clock   elapsed:              other lines",
+		"",
+	}
+
+	for _, tc := range []struct {
+		what  string
+		lines []string
+		msg   string
+		line  uint
+	}{
+		{
+			what:  "empty file",
+			lines: []string{""},
+			msg:   "Broken --startuptime output while parsing file",
+		},
+		{
+			what:  "empty line",
+			lines: append(header, ""),
+			msg:   "Lack of fields: ''",
+			line:  7,
+		},
+		{
+			what: "empty line middle of lines",
+			lines: append(header,
+				"000.008  000.008: --- VIM STARTING ---",
+				"",
+				"000.190  000.182: Allocated generic buffers",
+			),
+			msg:  "Lack of fields: ''",
+			line: 8,
+		},
+		{
+			what:  "invalid float at elapsed time",
+			lines: append(header, "00-.008  000.008: --- VIM STARTING ---"),
+			msg:   "Cannot parse field '00-.008' as millisec duration",
+			line:  7,
+		},
+		{
+			what:  "invalid float at self+source",
+			lines: append(header, "000.008  000.a08: --- VIM STARTING ---"),
+			msg:   "Cannot parse field '000.a08' as millisec duration",
+			line:  7,
+		},
+		{
+			what:  "invalid float at self",
+			lines: append(header, "198.369  000.161  000.!61: sourcing /foo/bar.vim"),
+			msg:   "Cannot parse field '000.!61' as millisec duration",
+			line:  7,
+		},
+		{
+			what:  "script name is not existing",
+			lines: append(header, "198.369  000.161  000.161: sourcing"),
+			msg:   "Too few fields",
+			line:  7,
+		},
+		{
+			what:  "'sourcing' is missing",
+			lines: append(header, "198.369  000.161  000.161: /foo/bar.vim foo"),
+			msg:   "'sourcing' token is expected but got '/foo/bar.vim'",
+			line:  7,
+		},
+	} {
+		t.Run(tc.what, func(t *testing.T) {
+			content := []byte(strings.Join(tc.lines, "\n") + "\n")
+			if err := ioutil.WriteFile(tmpname, content, 0644); err != nil {
+				panic(err)
+			}
+
+			f, err := os.Open(tmpname)
+			if err != nil {
+				panic(err)
+			}
+			defer f.Close()
+
+			_, err = parseStartuptime(f)
+			if err == nil {
+				t.Fatal("Error did not happen:", tc.msg)
+			}
+
+			msg := err.Error()
+			if !strings.Contains(msg, tc.msg) {
+				t.Fatalf("Unexpected error. '%s' is not in '%s'", tc.msg, msg)
+			}
+			if tc.line != 0 && !strings.Contains(msg, fmt.Sprintf("Parse error at line:%d:", tc.line)) {
+				t.Fatal("Error should occur at line", tc.line, "(error:", msg, ")")
 			}
 		})
 	}
