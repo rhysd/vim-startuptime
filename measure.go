@@ -33,7 +33,9 @@ func collectMeasurements(opts *options) (*collectedMeasurements, error) {
 		}
 		collected.total = append(collected.total, m.elapsedTotal)
 		for _, e := range m.entries {
-			collected.entries[e.name] = append(collected.entries[e.name], e.total)
+			if !opts.script || e.script {
+				collected.entries[e.name] = append(collected.entries[e.name], e.total)
+			}
 		}
 		f.Close()
 	}

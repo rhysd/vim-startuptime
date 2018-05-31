@@ -10,6 +10,7 @@ type options struct {
 	help      bool
 	count     uint
 	vimPath   string
+	script    bool
 	extraArgs []string
 }
 
@@ -31,6 +32,7 @@ func parseOptions() *options {
 	flag.BoolVar(&o.help, "help", false, "Show this help")
 	flag.UintVar(&o.count, "count", 10, "How many times measure startup time")
 	flag.StringVar(&o.vimPath, "vimpath", "vim", "Command to run Vim")
+	flag.BoolVar(&o.script, "script", false, "Only collects script loading times")
 
 	flag.Usage = usage
 	flag.Parse()
