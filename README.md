@@ -27,19 +27,21 @@ to stdout.
 
 ```
 Extra options: []
+Measured: 10 times
 
 Total: 197.416000 msec
 
+   AVERAGE
 109.252600: $HOME/.vimrc
-50.508600: opening buffers
-15.871500: /Users/rhysd/.vim/bundle/vim-color-spring-night/colors/spring-night.vim
-10.967500: /Users/rhysd/.vim/bundle/vim-smartinput/autoload/smartinput.vim
-8.736300: /usr/local/Cellar/macvim/HEAD-0db36ff_1/MacVim.app/Contents/Resources/vim/runtime/filetype.vim
+ 50.508600: opening buffers
+ 15.871500: /Users/rhysd/.vim/bundle/vim-color-spring-night/colors/spring-night.vim
+ 10.967500: /Users/rhysd/.vim/bundle/vim-smartinput/autoload/smartinput.vim
+  8.736300: /usr/local/Cellar/macvim/HEAD-0db36ff_1/MacVim.app/Contents/Resources/vim/runtime/filetype.vim
 
 ...(snip)
 
-0.002600: clipboard setup
-0.002400: editing files in windows
+  0.002600: clipboard setup
+  0.002400: editing files in windows
 ```
 
 Please see `-help` option to know the command options. If you want to give some options to underlying
