@@ -49,7 +49,7 @@ func alignFloatColumn(data []float64, header string) []string {
 	aligned = append(aligned, header)
 
 	for _, f := range data {
-		s := fmt.Sprintf("%f", f)
+		s := fmt.Sprintf("%.6f", f)
 		if len(s) < width {
 			s = fmt.Sprintf("%s%s", strings.Repeat(" ", width-len(s)), s)
 		}
