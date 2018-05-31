@@ -41,16 +41,6 @@ func collectMeasurements(opts *options) (*collectedMeasurements, error) {
 	return collected, nil
 }
 
-type averageEntry struct {
-	name     string
-	duration time.Duration
-}
-
-type averageMeasurement struct {
-	total         time.Duration
-	sortedEntries []averageEntry
-}
-
 func averageDuration(ds []time.Duration) time.Duration {
 	total := time.Duration(0)
 	for _, d := range ds {

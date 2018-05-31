@@ -24,9 +24,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	fmt.Printf("Extra options: %v\n\n", opts.extraArgs)
-	fmt.Printf("Total: %f msec\n\n", measured.total.Seconds()*1000)
-	for _, e := range measured.sortedEntries {
-		fmt.Printf("%f: %s\n", e.duration.Seconds()*1000, e.name)
-	}
+	fmt.Printf("Extra options: %v\n", opts.extraArgs)
+	fmt.Printf("Measured: %d times\n\n", opts.count)
+	measured.printSummary(os.Stdout)
 }
