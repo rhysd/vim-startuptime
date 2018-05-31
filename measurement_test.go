@@ -33,14 +33,19 @@ func TestPrintSummary(t *testing.T) {
 	lines = lines[:len(lines)-1]
 
 	if !strings.HasPrefix(lines[0], "Total: 200") {
-		t.Error("Header does not show total average:", lines[0])
+		t.Error("Total average is unexpected:", lines[0])
 	}
 	lines = lines[2:]
 
+	if lines[0] != "  AVERAGE" {
+		t.Error("Header is unexpected", lines[0])
+	}
+
 	have := lines
 	want := []string{
+		"  AVERAGE",
 		"12.345000: /foo/bar.vim",
-		"1.234000: $VIM/vimrc",
+		" 1.234000: $VIM/vimrc",
 	}
 
 	if !reflect.DeepEqual(have, want) {
