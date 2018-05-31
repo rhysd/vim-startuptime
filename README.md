@@ -32,6 +32,7 @@ Measured: 10 times
 Total: 197.416000 msec
 
    AVERAGE
+----------
 109.252600: $HOME/.vimrc
  50.508600: opening buffers
  15.871500: /Users/rhysd/.vim/bundle/vim-color-spring-night/colors/spring-night.vim
@@ -54,7 +55,6 @@ $ vim-startuptime -- --cmd DoSomeCommand
 ## TODO
 
 - Add more metrics like max/min/median
-- Add option to show spent time of sourced scripts only
 - Temporarily isolate CPU for running Vim if possible
 
 ## License

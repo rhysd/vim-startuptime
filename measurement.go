@@ -69,6 +69,7 @@ func (ave *averageMeasurement) printSummary(w io.Writer) {
 
 	averageColumn := alignFloatColumn(averages, "AVERAGE")
 	fmt.Fprintln(w, averageColumn[0])
+	fmt.Fprintln(w, strings.Repeat("-", len(averageColumn[0])))
 	for i, e := range ave.sortedEntries {
 		fmt.Fprintf(w, "%s: %s\n", averageColumn[i+1], e.name)
 	}
