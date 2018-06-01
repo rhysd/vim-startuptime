@@ -47,7 +47,7 @@ func TestCollectMeasurementsVimStartError(t *testing.T) {
 	}
 }
 
-func TestMeasureAverageStartuptime(t *testing.T) {
+func TestSummarizeStartuptime(t *testing.T) {
 	collected := &collectedMeasurements{
 		total: []time.Duration{
 			time.Duration(10000),
@@ -67,15 +67,15 @@ func TestMeasureAverageStartuptime(t *testing.T) {
 			},
 		},
 	}
-	want := &averageMeasurement{
+	want := &measurementSummary{
 		total: time.Duration(20000),
-		sortedEntries: []averageEntry{
-			averageEntry{"$VIM/vimrc", time.Duration(1400)},
-			averageEntry{"/foo/bar", time.Duration(120)},
+		sortedEntries: []entrySummary{
+			entrySummary{"$VIM/vimrc", time.Duration(1400)},
+			entrySummary{"/foo/bar", time.Duration(120)},
 		},
 	}
 
-	have, err := measureAverageStartuptime(collected)
+	have, err := summarizeStartuptime(collected)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -84,7 +84,7 @@ func TestMeasureAverageStartuptime(t *testing.T) {
 	}
 }
 
-func TestMeasureAverageStartuptimeError(t *testing.T) {
+func TestSummarizeStartuptimeError(t *testing.T) {
 	for _, tc := range []struct {
 		what      string
 		collected *collectedMeasurements
@@ -112,7 +112,7 @@ func TestMeasureAverageStartuptimeError(t *testing.T) {
 		},
 	} {
 		t.Run(tc.what, func(t *testing.T) {
-			_, err := measureAverageStartuptime(tc.collected)
+			_, err := summarizeStartuptime(tc.collected)
 			if err == nil {
 				t.Fatal("Error should happen")
 			}

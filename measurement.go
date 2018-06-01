@@ -21,14 +21,14 @@ type measurement struct {
 	entries      []*measurementEntry
 }
 
-type averageEntry struct {
-	name     string
-	duration time.Duration
+type entrySummary struct {
+	name    string
+	average time.Duration
 }
 
-type averageMeasurement struct {
+type measurementSummary struct {
 	total         time.Duration
-	sortedEntries []averageEntry
+	sortedEntries []entrySummary
 }
 
 func alignFloatColumn(data []float64, header string) []string {
@@ -59,18 +59,18 @@ func alignFloatColumn(data []float64, header string) []string {
 	return aligned
 }
 
-func (ave *averageMeasurement) printSummary(w io.Writer) {
-	fmt.Fprintf(w, "Total: %f msec\n\n", ave.total.Seconds()*1000)
+func (summary *measurementSummary) print(w io.Writer) {
+	fmt.Fprintf(w, "Total: %f msec\n\n", summary.total.Seconds()*1000)
 
-	averages := make([]float64, 0, len(ave.sortedEntries))
-	for _, e := range ave.sortedEntries {
-		averages = append(averages, e.duration.Seconds()*1000)
+	averages := make([]float64, 0, len(summary.sortedEntries))
+	for _, e := range summary.sortedEntries {
+		averages = append(averages, e.average.Seconds()*1000)
 	}
 
 	averageColumn := alignFloatColumn(averages, "AVERAGE")
 	fmt.Fprintln(w, averageColumn[0])
 	fmt.Fprintln(w, strings.Repeat("-", len(averageColumn[0])))
-	for i, e := range ave.sortedEntries {
+	for i, e := range summary.sortedEntries {
 		fmt.Fprintf(w, "%s: %s\n", averageColumn[i+1], e.name)
 	}
 }

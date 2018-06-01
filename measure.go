@@ -51,24 +51,24 @@ func averageDuration(ds []time.Duration) time.Duration {
 	return time.Duration(total.Nanoseconds()/int64(len(ds))) * time.Nanosecond
 }
 
-func measureAverageStartuptime(collected *collectedMeasurements) (*averageMeasurement, error) {
-	average := &averageMeasurement{}
-	average.sortedEntries = make([]averageEntry, 0, len(collected.entries))
+func summarizeStartuptime(collected *collectedMeasurements) (*measurementSummary, error) {
+	summary := &measurementSummary{}
+	summary.sortedEntries = make([]entrySummary, 0, len(collected.entries))
 	if len(collected.total) == 0 {
 		return nil, fmt.Errorf("No total time was collected")
 	}
-	average.total = averageDuration(collected.total)
+	summary.total = averageDuration(collected.total)
 	for n, ds := range collected.entries {
 		if len(ds) == 0 {
 			return nil, fmt.Errorf("No profile was collected for '%s'", n)
 		}
-		average.sortedEntries = append(average.sortedEntries, averageEntry{n, averageDuration(ds)})
+		summary.sortedEntries = append(summary.sortedEntries, entrySummary{n, averageDuration(ds)})
 	}
 
 	// Sort in decending order by duration
-	sort.Slice(average.sortedEntries, func(i, j int) bool {
-		return average.sortedEntries[i].duration > average.sortedEntries[j].duration
+	sort.Slice(summary.sortedEntries, func(i, j int) bool {
+		return summary.sortedEntries[i].average > summary.sortedEntries[j].average
 	})
 
-	return average, nil
+	return summary, nil
 }
