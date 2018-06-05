@@ -24,10 +24,12 @@ type measurement struct {
 type entrySummary struct {
 	name    string
 	average time.Duration
+	max     time.Duration
+	min     time.Duration
 }
 
 type measurementSummary struct {
-	total         time.Duration
+	total         entrySummary
 	sortedEntries []entrySummary
 }
 
@@ -60,17 +62,25 @@ func alignFloatColumn(data []float64, header string) []string {
 }
 
 func (summary *measurementSummary) print(w io.Writer) {
-	fmt.Fprintf(w, "Total: %f msec\n\n", summary.total.Seconds()*1000)
+	fmt.Fprintf(w, "Total Average: %f msec\n", summary.total.average.Seconds()*1000)
+	fmt.Fprintf(w, "Total Max:     %f msec\n", summary.total.max.Seconds()*1000)
+	fmt.Fprintf(w, "Total Min:     %f msec\n\n", summary.total.min.Seconds()*1000)
 
 	averages := make([]float64, 0, len(summary.sortedEntries))
+	maxes := make([]float64, 0, len(summary.sortedEntries))
+	mins := make([]float64, 0, len(summary.sortedEntries))
 	for _, e := range summary.sortedEntries {
 		averages = append(averages, e.average.Seconds()*1000)
+		maxes = append(maxes, e.max.Seconds()*1000)
+		mins = append(mins, e.min.Seconds()*1000)
 	}
-
 	averageColumn := alignFloatColumn(averages, "AVERAGE")
-	fmt.Fprintln(w, averageColumn[0])
-	fmt.Fprintln(w, strings.Repeat("-", len(averageColumn[0])))
+	maxColumn := alignFloatColumn(maxes, "MAX")
+	minColumn := alignFloatColumn(mins, "MIN")
+
+	fmt.Fprintf(w, "%s %s %s\n", averageColumn[0], maxColumn[0], minColumn[0])
+	fmt.Fprintln(w, strings.Repeat("-", len(averageColumn[0])+1+len(maxColumn[0])+1+len(minColumn[0])+1))
 	for i, e := range summary.sortedEntries {
-		fmt.Fprintf(w, "%s: %s\n", averageColumn[i+1], e.name)
+		fmt.Fprintf(w, "%s %s %s: %s\n", averageColumn[i+1], maxColumn[i+1], minColumn[i+1], e.name)
 	}
 }

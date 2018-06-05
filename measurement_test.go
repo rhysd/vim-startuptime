@@ -2,7 +2,6 @@ package main
 
 import (
 	"bytes"
-	"reflect"
 	"strings"
 	"testing"
 	"time"
@@ -17,45 +16,71 @@ func TestPrintSummary(t *testing.T) {
 		{
 			"different number of digits in entries",
 			&measurementSummary{
-				time.Duration(200) * time.Millisecond,
+				entrySummary{
+					"Total",
+					time.Duration(200) * time.Millisecond,
+					time.Duration(300) * time.Millisecond,
+					time.Duration(100) * time.Millisecond,
+				},
 				[]entrySummary{
 					entrySummary{
 						"/foo/bar.vim",
 						time.Duration(12345) * time.Microsecond,
+						time.Duration(13334) * time.Microsecond,
+						time.Duration(11112) * time.Microsecond,
 					},
 					entrySummary{
 						"$VIM/vimrc",
 						time.Duration(1234) * time.Microsecond,
+						time.Duration(1334) * time.Microsecond,
+						time.Duration(1112) * time.Microsecond,
 					},
 				},
 			},
 			[]string{
-				"  AVERAGE",
-				"---------",
-				"12.345000: /foo/bar.vim",
-				" 1.234000: $VIM/vimrc",
+				"Total Average: 200.000000 msec",
+				"Total Max:     300.000000 msec",
+				"Total Min:     100.000000 msec",
+				"",
+				"  AVERAGE       MAX       MIN",
+				"------------------------------",
+				"12.345000 13.334000 11.112000: /foo/bar.vim",
+				" 1.234000  1.334000  1.112000: $VIM/vimrc",
 			},
 		},
 		{
 			"same number of digits in entries",
 			&measurementSummary{
-				time.Duration(200) * time.Millisecond,
+				entrySummary{
+					"Total",
+					time.Duration(200) * time.Millisecond,
+					time.Duration(1000) * time.Millisecond,
+					time.Duration(10) * time.Millisecond,
+				},
 				[]entrySummary{
 					entrySummary{
 						"/foo/bar.vim",
 						time.Duration(5678) * time.Microsecond,
+						time.Duration(7890) * time.Microsecond,
+						time.Duration(1234) * time.Microsecond,
 					},
 					entrySummary{
 						"$VIM/vimrc",
 						time.Duration(1234) * time.Microsecond,
+						time.Duration(2345) * time.Microsecond,
+						time.Duration(1000) * time.Microsecond,
 					},
 				},
 			},
 			[]string{
-				" AVERAGE",
-				"--------",
-				"5.678000: /foo/bar.vim",
-				"1.234000: $VIM/vimrc",
+				"Total Average: 200.000000 msec",
+				"Total Max:     1000.000000 msec",
+				"Total Min:     10.000000 msec",
+				"",
+				" AVERAGE      MAX      MIN",
+				"---------------------------",
+				"5.678000 7.890000 1.234000: /foo/bar.vim",
+				"1.234000 2.345000 1.000000: $VIM/vimrc",
 			},
 		},
 	} {
@@ -69,13 +94,14 @@ func TestPrintSummary(t *testing.T) {
 			}
 			lines = lines[:len(lines)-1]
 
-			if !strings.HasPrefix(lines[0], "Total: 200") {
-				t.Error("Total average is unexpected:", lines[0])
+			if len(lines) != len(tc.want) {
+				t.Fatalf("Number of lines does not match: %d v.s. %d. ('%s' v.s. '%s')", len(tc.want), len(lines), tc.want, lines)
 			}
-			lines = lines[2:]
-
-			if !reflect.DeepEqual(lines, tc.want) {
-				t.Fatalf("Profile result per entry is unexpected. Have '%v' but want '%v'", lines, tc.want)
+			for i := range lines {
+				want, have := tc.want[i], lines[i]
+				if have != want {
+					t.Errorf("Line %d does not match: Wanted '%s' but have '%s'", i+1, want, have)
+				}
 			}
 		})
 	}

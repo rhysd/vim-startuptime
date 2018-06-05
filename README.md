@@ -29,20 +29,24 @@ to stdout.
 Extra options: []
 Measured: 10 times
 
-Total: 197.416000 msec
+Total Average: 189.954400 msec
+Total Max:     198.062000 msec
+Total Min:     183.966000 msec
 
-   AVERAGE
-----------
-109.252600: $HOME/.vimrc
- 50.508600: opening buffers
- 15.871500: /Users/rhysd/.vim/bundle/vim-color-spring-night/colors/spring-night.vim
- 10.967500: /Users/rhysd/.vim/bundle/vim-smartinput/autoload/smartinput.vim
-  8.736300: /usr/local/Cellar/macvim/HEAD-0db36ff_1/MacVim.app/Contents/Resources/vim/runtime/filetype.vim
+  AVERAGE        MAX       MIN
+-------------------------------
+98.532900 102.605000 94.275000: $HOME/.vimrc
+51.859600  56.937000 49.897000: opening buffers
+17.027900  18.810000 16.277000: /Users/rhysd/.vim/bundle/vim-color-spring-night/colors/spring-night.vim
+11.878900  13.153000 10.567000: /Users/rhysd/.vim/bundle/vim-smartinput/autoload/smartinput.vim
+ 9.407600  11.710000  8.606000: /usr/local/Cellar/macvim/HEAD-0db36ff_1/MacVim.app/Contents/Resources/vim/runtime/filetype.vim
 
 ...(snip)
 
-  0.002600: clipboard setup
-  0.002400: editing files in windows
+ 0.009100   0.012000  0.007000: window checked
+ 0.009000   0.012000  0.008000: inits 3
+ 0.003000   0.005000  0.002000: clipboard setup
+ 0.002600   0.004000  0.002000: editing files in windows
 ```
 
 Please see `-help` option to know the command options. If you want to give some options to underlying
@@ -54,7 +58,7 @@ $ vim-startuptime -- --cmd DoSomeCommand
 
 ## TODO
 
-- Add more metrics like max/min/median
+- Add more metrics like median
 - Temporarily isolate CPU for running Vim if possible
 
 ## License

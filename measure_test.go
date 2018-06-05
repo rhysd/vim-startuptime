@@ -68,10 +68,25 @@ func TestSummarizeStartuptime(t *testing.T) {
 		},
 	}
 	want := &measurementSummary{
-		total: time.Duration(20000),
+		total: entrySummary{
+			"Total",
+			time.Duration(20000),
+			time.Duration(30000),
+			time.Duration(10000),
+		},
 		sortedEntries: []entrySummary{
-			entrySummary{"$VIM/vimrc", time.Duration(1400)},
-			entrySummary{"/foo/bar", time.Duration(120)},
+			entrySummary{
+				"$VIM/vimrc",
+				time.Duration(1400),
+				time.Duration(1500),
+				time.Duration(1300),
+			},
+			entrySummary{
+				"/foo/bar",
+				time.Duration(120),
+				time.Duration(130),
+				time.Duration(110),
+			},
 		},
 	}
 
