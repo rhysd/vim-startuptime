@@ -11,7 +11,7 @@ for bin in *; do
     if [[ "$bin" == *windows* ]]; then
         command="vim-startuptime.exe"
     else
-        command="vim-startuptime_"
+        command="vim-startuptime"
     fi
     mv "$bin" "$command"
     zip "${bin}.zip" "$command"
