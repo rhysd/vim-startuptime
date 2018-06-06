@@ -6,13 +6,23 @@ import (
 	"os/exec"
 	"path/filepath"
 	"strconv"
+	"strings"
 )
+
+func isNeovimPath(vimpath string) bool {
+	return strings.HasSuffix(vimpath, "nvim") || strings.HasSuffix(vimpath, "nvim.exe")
+}
 
 func runVimStartuptime(vimpath, tmpdir string, id int, extra []string) (*os.File, error) {
 	outfile := filepath.Join(tmpdir, strconv.Itoa(id))
 	args := make([]string, 0, len(extra)+4)
 	args = append(args, extra...)
-	args = append(args, "--not-a-term", "-c", "quit", "--startuptime", outfile)
+	if isNeovimPath(vimpath) {
+		args = append(args, "--headless")
+	} else {
+		args = append(args, "--not-a-term")
+	}
+	args = append(args, "-c", "quit", "--startuptime", outfile)
 
 	cmd := exec.Command(vimpath, args...)
 	out, err := cmd.CombinedOutput()
