@@ -35,6 +35,33 @@ func TestRunVimOK(t *testing.T) {
 	}
 }
 
+func TestRunNeovimOK(t *testing.T) {
+	dir, err := ioutil.TempDir("", "__nvim_run_test_")
+	if err != nil {
+		panic(err)
+	}
+	defer os.RemoveAll(dir)
+
+	f, err := runVimStartuptime("nvim", dir, 3, []string{"-u", "NONE", "-N"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer f.Close()
+
+	_, fname := filepath.Split(f.Name())
+	if fname != "3" {
+		t.Error("Invalid result file name", fname, "Wanted '3'")
+	}
+	bytes, err := ioutil.ReadAll(f)
+	if err != nil {
+		t.Fatal("Cannot open startup result file", err)
+	}
+	content := string(bytes)
+	if !strings.Contains(content, "--- NVIM STARTING ---") {
+		t.Error("Invalid result file:", content)
+	}
+}
+
 func TestStartError(t *testing.T) {
 	dir, err := ioutil.TempDir("", "__vim_run_test_")
 	if err != nil {
