@@ -10,6 +10,10 @@ install:
     - go env
     - go get -v -t -d ./...
     - powershell -File .ci\install-vim.ps1
+    - ps: |
+        $Env:Path = $Env:Path + ';' + $Env:APPVEYOR_BUILD_FOLDER + '\nvim-win64\Neovim\bin\'
+        $vim = $Env:APPVEYOR_BUILD_FOLDER + '\vim\'
+        $Env:Path = $vim + (Get-ChildItem $vim).Name + ';' + $Env:Path
     - echo %Path%
     - vim --version
     - nvim --version
