@@ -4,7 +4,7 @@ set -ev
 
 case "$TRAVIS_OS_NAME" in
     linux)
-        if [ -d "$HOME/vim" ]; then
+        if [ -x "$HOME/vim/bin/vim" ]; then
             echo "Will use cache at $HOME/vim"
             exit 0
         fi
