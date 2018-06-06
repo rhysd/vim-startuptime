@@ -17,6 +17,11 @@ Tested on Linux, Mac and Windows with both Vim and Neovim.
 
 ## Installation
 
+Download an executable from [a release page](https://github.com/rhysd/vim-startuptime/releases).
+
+If you want to install the HEAD of this repository, please run following command. Go toolchain is
+necessary for running the command.
+
 ```
 $ go get github.com/rhysd/vim-startuptime
 ```
@@ -38,8 +43,8 @@ Just run the command with no argument.
 $ vim-startuptime
 ```
 
-By default, it tries to run `vim` and `:quit` immediately 10 times, collects the result and show it
-to stdout.
+By default, it tries to run `vim` and `:quit` immediately 10 times, collects the results and outputs
+a summary of them to stdout.
 
 ```
 Extra options: []
