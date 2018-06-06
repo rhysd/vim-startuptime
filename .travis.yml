@@ -6,8 +6,9 @@ install:
   - go get -t -d -v ./...
   - go version
   - go env
-  - bash scripts/install-vim.sh
+  - bash .ci/install-vim.sh
   - export PATH=$HOME/vim/bin:$PATH
+  - vim --version
 script:
   - go build
   - go test -v -race -coverprofile=coverage.txt
