@@ -4,6 +4,9 @@ set -ev
 
 case "$TRAVIS_OS_NAME" in
     linux)
+        cd "$HOME"
+        curl -LO https://github.com/neovim/neovim/releases/download/nightly/nvim-linux64.tar.gz
+        tar xzf nvim-linux64.tar.gz
         if [ -x "$HOME/vim/bin/vim" ]; then
             echo "Will use cache at $HOME/vim"
             exit 0
@@ -16,6 +19,9 @@ case "$TRAVIS_OS_NAME" in
         ;;
     osx)
         brew install macvim --with-override-system-vim
+        cd "$HOME"
+        curl -LO https://github.com/neovim/neovim/releases/download/nightly/nvim-macos.tar.gz
+        tar xzf nvim-macos.tar.gz
         ;;
     *)
         echo "Unknown OS: $TRAVIS_OS_NAME"

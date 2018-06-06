@@ -11,15 +11,24 @@ to optimize Vim's startup.
 `vim-startuptime` runs `vim --startuptime` multiple times internally and collects the metrics from
 the results (e.g. average time for loading each plugin's scripts).
 
+Tested on Linux, Mac and Windows with both Vim and Neovim.
+
+
+
 ## Installation
 
 ```
 $ go get github.com/rhysd/vim-startuptime
 ```
 
+
+
 ## Requirements
 
-- Vim 7.4.1444 or later (for `--not-a-term` startup option)
+- `vim` 7.4.1444 or later (for `--not-a-term` startup option)
+- `nvim`
+
+
 
 ## Usage
 
@@ -56,17 +65,29 @@ Total Min:     183.966000 msec
  0.002600   0.004000  0.002000: editing files in windows
 ```
 
-Please see `-help` option to know the command options. If you want to give some options to underlying
-`vim` command executions, please specify them after `--` argument in command line as follows:
+If you want to run with Neovim, please specify `-vimpath` option as follows:
+
+```
+$ vim-startuptime -vimpath nvim
+```
+
+If you want to give some options to underlying `vim` command executions, please specify them after
+`--` argument in command line as follows:
 
 ```
 $ vim-startuptime -- --cmd DoSomeCommand
 ```
 
+Please see `-help` option to know the command options.
+
+
+
 ## TODO
 
 - Add more metrics like median
 - Temporarily isolate CPU for running Vim if possible
+
+
 
 ## License
 

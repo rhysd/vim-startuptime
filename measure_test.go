@@ -8,42 +8,40 @@ import (
 )
 
 func TestCollectMeasurementsOK(t *testing.T) {
-	opts := &options{count: 2, vimPath: "vim", extraArgs: []string{"-N", "-u", "NONE"}}
-	collected, err := collectMeasurements(opts)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if len(collected.total) != 2 {
-		t.Error("2 total times should be collected but", len(collected.total))
-	}
-	for _, d := range collected.total {
-		if d == time.Duration(0) {
-			t.Error("Zero duration in collected total times:", collected.total)
-		}
-	}
-	if len(collected.entries) == 0 {
-		t.Error("Collected entries are empty")
-	}
-	for s, ds := range collected.entries {
-		if len(ds) < 2 {
-			t.Error("Source time for", s, " should be collected twice but", ds)
-		}
-		for _, d := range ds {
-			if d == time.Duration(0) {
-				t.Error("Zero duration in collected times for", s, ":", ds)
+	for _, path := range []string{"vim", "nvim"} {
+		t.Run(path, func(t *testing.T) {
+			opts := &options{count: 2, vimPath: path, extraArgs: []string{"-N", "-u", "NONE"}}
+			collected, err := collectMeasurements(opts)
+			if err != nil {
+				t.Fatal(err)
 			}
-		}
+			if len(collected.total) != 2 {
+				t.Error("2 total times should be collected but", len(collected.total))
+			}
+			if len(collected.entries) == 0 {
+				t.Error("Collected entries are empty")
+			}
+			for s, ds := range collected.entries {
+				if len(ds) < 2 {
+					t.Error("Source time for", s, " should be collected twice but", ds)
+				}
+			}
+		})
 	}
 }
 
 func TestCollectMeasurementsVimStartError(t *testing.T) {
-	opts := &options{count: 2, vimPath: "vim", extraArgs: []string{"--foo"}}
-	_, err := collectMeasurements(opts)
-	if err == nil {
-		t.Fatal("No error occurred")
-	}
-	if !strings.Contains(err.Error(), "Failed to run vim with args [--foo") {
-		t.Fatal("Unexpected error:", err.Error())
+	for _, path := range []string{"vim", "nvim"} {
+		t.Run(path, func(t *testing.T) {
+			opts := &options{count: 2, vimPath: path, extraArgs: []string{"--foo"}}
+			_, err := collectMeasurements(opts)
+			if err == nil {
+				t.Fatal("No error occurred")
+			}
+			if !strings.Contains(err.Error(), "Failed to run "+path+" with args [--foo") {
+				t.Fatal("Unexpected error:", err.Error())
+			}
+		})
 	}
 }
 
