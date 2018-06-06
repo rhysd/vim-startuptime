@@ -1,0 +1,13 @@
+language: go
+os:
+  - linux
+  - osx
+install:
+  - go get -t -d -v ./...
+  - go version
+  - go env
+script:
+  - go build
+  - go test -v -race -coverprofile=coverage.txt
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
