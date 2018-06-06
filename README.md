@@ -14,6 +14,10 @@ the results (e.g. average time for loading each plugin's scripts).
 $ go get github.com/rhysd/vim-startuptime
 ```
 
+## Requirements
+
+- Vim 7.4.1444 or later (for `--not-a-term` startup option)
+
 ## Usage
 
 Just run the command with no argument.
