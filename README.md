@@ -1,5 +1,8 @@
 Better `vim --startuptime`
 ==========================
+[![TravisCI Status][]][TravisCI]
+[![AppVeyor Status][]][AppVeyor]
+[![Codecov Status][]][Codecov]
 
 `vim-startuptime` is a small Go program to measure startup time of Vim. This program aims to be an
 alternative of `--startuptime` option of Vim, which measures the startup time metrics to allow vimmers
@@ -13,6 +16,10 @@ the results (e.g. average time for loading each plugin's scripts).
 ```
 $ go get github.com/rhysd/vim-startuptime
 ```
+
+## Requirements
+
+- Vim 7.4.1444 or later (for `--not-a-term` startup option)
 
 ## Usage
 
@@ -64,3 +71,12 @@ $ vim-startuptime -- --cmd DoSomeCommand
 ## License
 
 Distributed under [the MIT License](./LICENSE).
+
+
+
+[TravisCI Status]: https://travis-ci.org/rhysd/vim-startuptime.svg?branch=master
+[TravisCI]: https://travis-ci.org/rhysd/vim-startuptime
+[AppVeyor Status]: https://ci.appveyor.com/api/projects/status/1tpyd9q9tw3ime5u/branch/master?svg=true
+[AppVeyor]: https://ci.appveyor.com/project/rhysd/vim-startuptime/branch/master
+[Codecov Status]: https://codecov.io/gh/rhysd/vim-startuptime/branch/master/graph/badge.svg
+[Codecov]: https://codecov.io/gh/rhysd/vim-startuptime

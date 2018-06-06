@@ -1,0 +1,23 @@
+version: "{build}"
+clone_depth: 1
+clone_folder: c:\gopath\src\github.com\rhysd\vim-startuptime
+environment:
+    GOPATH: c:\gopath
+install:
+    - echo %PATH%
+    - echo %GOPATH%
+    - go version
+    - go env
+    - go get -v -t -d ./...
+    - powershell -File .ci\install-vim.ps1
+    - echo %Path%
+    - vim --version
+build: off
+test_script:
+    - go build
+    - go test -v -race -coverprofile=coverage.txt
+after_test:
+    - "SET PATH=C:\\Python34;C:\\Python34\\Scripts;%PATH%"
+    - pip install codecov
+    - codecov -f "coverage.txt"
+deploy: off
