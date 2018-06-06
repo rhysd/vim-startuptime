@@ -12,6 +12,7 @@ install:
     - powershell -File .ci\install-vim.ps1
     - echo %Path%
     - vim --version
+    - nvim --version
 build: off
 test_script:
     - go build

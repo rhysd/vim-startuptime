@@ -7,8 +7,9 @@ install:
   - go version
   - go env
   - bash .ci/install-vim.sh
-  - export PATH=$HOME/vim/bin:$PATH
+  - export PATH=$HOME/vim/bin:$HOME/nvim-${TRAVIS_OS_NAME}64/bin:$PATH
   - vim --version
+  - nvim --version
 script:
   - go build
   - go test -v -race -coverprofile=coverage.txt
