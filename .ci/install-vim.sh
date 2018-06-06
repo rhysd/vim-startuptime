@@ -4,6 +4,10 @@ set -ev
 
 case "$TRAVIS_OS_NAME" in
     linux)
+        if [ -d "$HOME/vim" ]; then
+            echo "Will use cache at $HOME/vim"
+            exit 0
+        fi
         git clone --depth 1 --single-branch https://github.com/vim/vim /tmp/vim
         cd /tmp/vim
         ./configure --prefix="${HOME}/vim" --with-features=huge --enable-fail-if-missing

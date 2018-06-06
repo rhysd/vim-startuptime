@@ -14,3 +14,6 @@ script:
   - go test -v -race -coverprofile=coverage.txt
 after_success:
   - bash <(curl -s https://codecov.io/bash)
+cache:
+  directories:
+    - /home/travis/vim
