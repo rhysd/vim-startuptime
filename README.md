@@ -86,8 +86,21 @@ $ vim-startuptime -- --cmd DoSomeCommand
 Please see `-help` option to know the command options.
 
 
+## What's Next after running `vim-startuptime`?
 
-## TODO
+By running `vim-startuptime`, now you know which script file takes time to run. What you should do
+next is `:profile`.
+
+```
+$ vim --cmd 'profile start profile.log' --cmd 'profile! file /path/to/slow_script.vim' -c quit
+```
+
+Profiling results are dumped to `profile.log`. Please check it. In log file, `:set ft=vim` would help
+you analyze the results.
+Please see `:help profile` for more details.
+
+
+## (Maybe) TODO
 
 - Add more metrics like median
 - Temporarily isolate CPU for running Vim if possible
