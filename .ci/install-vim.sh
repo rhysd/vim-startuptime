@@ -18,7 +18,7 @@ case "$TRAVIS_OS_NAME" in
         make install
         ;;
     osx)
-        brew install macvim --with-override-system-vim
+        brew install macvim
         cd "$HOME"
         curl -LO https://github.com/neovim/neovim/releases/download/nightly/nvim-macos.tar.gz
         tar xzf nvim-macos.tar.gz
