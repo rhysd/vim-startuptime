@@ -12,6 +12,7 @@ type options struct {
 	vimPath   string
 	script    bool
 	extraArgs []string
+	warmup    uint
 }
 
 const usageHeader = `Usage: vim-startuptime [flags] [-- vim options]
@@ -33,6 +34,7 @@ func parseOptions() *options {
 	flag.UintVar(&o.count, "count", 10, "How many times measure startup time")
 	flag.StringVar(&o.vimPath, "vimpath", "vim", "Command to run Vim")
 	flag.BoolVar(&o.script, "script", false, "Only collects script loading times")
+	flag.UintVar(&o.warmup, "warmup", 1, "How many times start Vim at warm-up phase")
 
 	flag.Usage = usage
 	flag.Parse()

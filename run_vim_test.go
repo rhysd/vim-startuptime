@@ -52,8 +52,9 @@ func TestStartError(t *testing.T) {
 			if err == nil {
 				t.Fatal("Invalid extra args should cause an error")
 			}
-			if !strings.Contains(err.Error(), "Failed to run "+exe+" with args [--foo --bar") {
-				t.Error("Unexpected error:", err)
+			want := "Failed to run \"" + exe + "\" with args [--foo --bar"
+			if !strings.Contains(err.Error(), want) {
+				t.Errorf("Wanted %q but got %q", want, err)
 			}
 		})
 	}

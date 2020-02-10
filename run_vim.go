@@ -13,22 +13,31 @@ func isNeovimPath(vimpath string) bool {
 	return strings.HasSuffix(vimpath, "nvim") || strings.HasSuffix(vimpath, "nvim.exe")
 }
 
-func runVimStartuptime(vimpath, tmpdir string, id int, extra []string) (*os.File, error) {
-	outfile := filepath.Join(tmpdir, strconv.Itoa(id))
-	args := make([]string, 0, len(extra)+4)
-	args = append(args, extra...)
+func runVim(vimpath string, extra []string, args ...string) error {
+	a := make([]string, 0, len(extra)+3+len(args))
+	a = append(a, extra...)
 	if isNeovimPath(vimpath) {
-		args = append(args, "--headless")
+		a = append(a, "--headless")
 	} else {
-		args = append(args, "--not-a-term")
+		a = append(a, "--not-a-term")
 	}
-	args = append(args, "-c", "quit", "--startuptime", outfile)
+	a = append(a, "-c", "quit")
+	a = append(a, args...)
 
-	cmd := exec.Command(vimpath, args...)
+	cmd := exec.Command(vimpath, a...)
 	out, err := cmd.CombinedOutput()
 	if err != nil {
-		return nil, fmt.Errorf("Failed to run %s with args %v: %s", vimpath, args, string(out))
+		return fmt.Errorf("Failed to run %q with args %v: %s. Output: %s", vimpath, a, err, string(out))
 	}
+	return nil
+}
+
+func runVimStartuptime(vimpath, tmpdir string, id int, extra []string) (*os.File, error) {
+	outfile := filepath.Join(tmpdir, strconv.Itoa(id))
+	if err := runVim(vimpath, extra, "--startuptime", outfile); err != nil {
+		return nil, err
+	}
+
 	f, err := os.Open(outfile)
 	if err != nil {
 		return nil, fmt.Errorf("Could not open --startuptime result file '%s': %v", outfile, err)

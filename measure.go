@@ -14,6 +14,12 @@ type collectedMeasurements struct {
 }
 
 func collectMeasurements(opts *options) (*collectedMeasurements, error) {
+	for i := uint(0); i < opts.warmup; i++ {
+		if err := runVim(opts.vimPath, opts.extraArgs); err != nil {
+			return nil, fmt.Errorf("Failed while warmup: %v", err)
+		}
+	}
+
 	dir, err := ioutil.TempDir("", "__vim_startuptime_")
 	if err != nil {
 		return nil, fmt.Errorf("Failed to open temporary directory: %v", err)

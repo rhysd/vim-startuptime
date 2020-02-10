@@ -38,7 +38,7 @@ func TestCollectMeasurementsVimStartError(t *testing.T) {
 			if err == nil {
 				t.Fatal("No error occurred")
 			}
-			if !strings.Contains(err.Error(), "Failed to run "+path+" with args [--foo") {
+			if !strings.Contains(err.Error(), "Failed to run \""+path+"\" with args [--foo") {
 				t.Fatal("Unexpected error:", err.Error())
 			}
 		})

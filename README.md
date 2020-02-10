@@ -8,8 +8,8 @@ Better `vim --startuptime`
 alternative of `--startuptime` option of Vim, which measures the startup time metrics to allow vimmers
 to optimize Vim's startup.
 
-`vim-startuptime` runs `vim --startuptime` multiple times internally and collects the metrics from
-the results (e.g. average time for loading each plugin's scripts).
+After warm-up, `vim-startuptime` runs `vim --startuptime` multiple times internally and collects the
+metrics from the results (e.g. average time for loading each plugin's scripts).
 
 Tested on Linux, Mac and Windows with both Vim and Neovim.
 
