@@ -4,7 +4,7 @@ clone_folder: c:\gopath\src\github.com\rhysd\vim-startuptime
 environment:
     GOPATH: c:\gopath
 install:
-    - set PATH=c:\MinGW\bin;%PATH%
+    - set PATH=C:\msys64\mingw64\bin;%PATH%
     - echo %PATH%
     - echo %GOPATH%
     - go version
