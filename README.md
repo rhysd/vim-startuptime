@@ -1,7 +1,6 @@
 Better `vim --startuptime`
 ==========================
-[![TravisCI Status][]][TravisCI]
-[![AppVeyor Status][]][AppVeyor]
+[![CI Badge][]][CI]
 [![Codecov Status][]][Codecov]
 
 `vim-startuptime` is a small Go program to measure startup time of Vim. This program aims to be an
@@ -113,9 +112,7 @@ Distributed under [the MIT License](./LICENSE).
 
 
 
-[TravisCI Status]: https://travis-ci.org/rhysd/vim-startuptime.svg?branch=master
-[TravisCI]: https://travis-ci.org/rhysd/vim-startuptime
-[AppVeyor Status]: https://ci.appveyor.com/api/projects/status/1tpyd9q9tw3ime5u/branch/master?svg=true
-[AppVeyor]: https://ci.appveyor.com/project/rhysd/vim-startuptime/branch/master
+[CI Badge]: https://github.com/rhysd/vim-startuptime/workflows/CI/badge.svg?branch=github-actions&event=push
+[CI]: https://github.com/rhysd/vim-startuptime/actions?query=workflow%3ACI+branch%3Amaster
 [Codecov Status]: https://codecov.io/gh/rhysd/vim-startuptime/branch/master/graph/badge.svg
 [Codecov]: https://codecov.io/gh/rhysd/vim-startuptime
