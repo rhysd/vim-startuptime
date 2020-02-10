@@ -112,7 +112,7 @@ Distributed under [the MIT License](./LICENSE).
 
 
 
-[CI Badge]: https://github.com/rhysd/vim-startuptime/workflows/CI/badge.svg?branch=github-actions&event=push
+[CI Badge]: https://github.com/rhysd/vim-startuptime/workflows/CI/badge.svg?branch=master&event=push
 [CI]: https://github.com/rhysd/vim-startuptime/actions?query=workflow%3ACI+branch%3Amaster
 [Codecov Status]: https://codecov.io/gh/rhysd/vim-startuptime/branch/master/graph/badge.svg
 [Codecov]: https://codecov.io/gh/rhysd/vim-startuptime
