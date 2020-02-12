@@ -13,12 +13,14 @@ type options struct {
 	script    bool
 	extraArgs []string
 	warmup    uint
+	verbose   bool
 }
 
 const usageHeader = `Usage: vim-startuptime [flags] [-- vim options]
 
   vim-startuptime is a command which provides better --startuptime option of Vim.
-  It starts Vim with --startuptime multiple times and collects the results.
+  It starts Vim with --startuptime multiple times, collects the results and
+  outputs summary of the measurements to stdout.
 
 Flags:`
 
@@ -35,6 +37,7 @@ func parseOptions() *options {
 	flag.StringVar(&o.vimPath, "vimpath", "vim", "Command to run Vim")
 	flag.BoolVar(&o.script, "script", false, "Only collects script loading times")
 	flag.UintVar(&o.warmup, "warmup", 1, "How many times start Vim at warm-up phase")
+	flag.BoolVar(&o.verbose, "verbose", false, "Verbose output to stderr while measurements")
 
 	flag.Usage = usage
 	flag.Parse()

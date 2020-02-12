@@ -18,7 +18,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	summary, err := summarizeStartuptime(collected)
+	summary, err := summarizeStartuptime(collected, opts.verbose)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)

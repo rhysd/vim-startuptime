@@ -14,6 +14,9 @@ type collectedMeasurements struct {
 }
 
 func collectMeasurements(opts *options) (*collectedMeasurements, error) {
+	if opts.verbose {
+		fmt.Fprintf(os.Stderr, "Running warm-up phase %d times\n", opts.warmup)
+	}
 	for i := uint(0); i < opts.warmup; i++ {
 		if err := runVim(opts.vimPath, opts.extraArgs); err != nil {
 			return nil, fmt.Errorf("Failed while warmup: %v", err)
@@ -26,6 +29,9 @@ func collectMeasurements(opts *options) (*collectedMeasurements, error) {
 	}
 	defer os.RemoveAll(dir)
 
+	if opts.verbose {
+		fmt.Fprintf(os.Stderr, "Running %q with arguments %v %d times at %q\n", opts.vimPath, opts.extraArgs, opts.count, dir)
+	}
 	collected := &collectedMeasurements{entries: map[string][]time.Duration{}}
 	for id := 0; id < int(opts.count); id++ {
 		f, err := runVimStartuptime(opts.vimPath, dir, id, opts.extraArgs)
@@ -66,7 +72,11 @@ func summarizeEntry(name string, ds []time.Duration) entrySummary {
 	return entrySummary{name, average, max, min}
 }
 
-func summarizeStartuptime(collected *collectedMeasurements) (*measurementSummary, error) {
+func summarizeStartuptime(collected *collectedMeasurements, verbose bool) (*measurementSummary, error) {
+	if verbose {
+		fmt.Fprintf(os.Stderr, "Calculating summary of collected %d results\n", len(collected.entries))
+	}
+
 	summary := &measurementSummary{}
 	summary.sortedEntries = make([]entrySummary, 0, len(collected.entries))
 	if len(collected.total) == 0 {
@@ -85,5 +95,8 @@ func summarizeStartuptime(collected *collectedMeasurements) (*measurementSummary
 		return summary.sortedEntries[i].average > summary.sortedEntries[j].average
 	})
 
+	if verbose {
+		fmt.Fprintln(os.Stderr, "Calculated summary. Printing...")
+	}
 	return summary, nil
 }

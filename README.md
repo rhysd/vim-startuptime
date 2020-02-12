@@ -8,7 +8,8 @@ alternative of `--startuptime` option of Vim, which measures the startup time me
 to optimize Vim's startup.
 
 After warm-up, `vim-startuptime` runs `vim --startuptime` multiple times internally and collects the
-metrics from the results (e.g. average time for loading each plugin's scripts).
+metrics from the results (e.g. average time for loading each plugin's scripts). The summary calculated
+from the measurements is output to stdout.
 
 Tested on Linux, Mac and Windows with both Vim and Neovim.
 
@@ -85,6 +86,7 @@ $ vim-startuptime -- --cmd DoSomeCommand
 Please see `-help` option to know the command options.
 
 
+
 ## What's Next after running `vim-startuptime`?
 
 By running `vim-startuptime`, now you know which script file takes time to run. What you should do
@@ -94,9 +96,10 @@ next is `:profile`.
 $ vim --cmd 'profile start profile.log' --cmd 'profile! file /path/to/slow_script.vim' -c quit
 ```
 
-Profiling results are dumped to `profile.log`. Please check it. In log file, `:set ft=vim` would help
+Profiled results are dumped to `profile.log`. Please check it. In log file, `:set ft=vim` would help
 you analyze the results.
 Please see `:help profile` for more details.
+
 
 
 ## (Maybe) TODO
