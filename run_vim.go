@@ -21,7 +21,7 @@ func runVim(vimpath string, extra []string, args ...string) error {
 	} else {
 		a = append(a, "--not-a-term")
 	}
-	a = append(a, "-c", "quit")
+	a = append(a, "-c", "qall!")
 	a = append(a, args...)
 
 	cmd := exec.Command(vimpath, a...)
