@@ -88,7 +88,7 @@ func TestSummarizeStartuptime(t *testing.T) {
 		},
 	}
 
-	have, err := summarizeStartuptime(collected)
+	have, err := summarizeStartuptime(collected, false)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -125,7 +125,7 @@ func TestSummarizeStartuptimeError(t *testing.T) {
 		},
 	} {
 		t.Run(tc.what, func(t *testing.T) {
-			_, err := summarizeStartuptime(tc.collected)
+			_, err := summarizeStartuptime(tc.collected, false)
 			if err == nil {
 				t.Fatal("Error should happen")
 			}
