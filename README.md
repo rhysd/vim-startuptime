@@ -19,11 +19,11 @@ Tested on Linux, Mac and Windows with both Vim and Neovim.
 
 Download an executable from [a release page](https://github.com/rhysd/vim-startuptime/releases).
 
-If you want to install the HEAD of this repository, please run following command. Go toolchain is
+If you want to install the latest stable version, please run following command. Go toolchain is
 necessary for running the command.
 
 ```
-$ go get github.com/rhysd/vim-startuptime
+$ go install github.com/rhysd/vim-startuptime@latest
 ```
 
 
