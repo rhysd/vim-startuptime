@@ -15,9 +15,7 @@ func parseErrorAt(lineno uint, format string, args ...interface{}) error {
 }
 
 func parseDuration(s string, lineno uint) (time.Duration, error) {
-	if strings.HasSuffix(s, ":") {
-		s = s[:len(s)-1]
-	}
+	s = strings.TrimSuffix(s, ":")
 	f, err := strconv.ParseFloat(s, 64)
 	if err != nil {
 		return time.Duration(0), parseErrorAt(lineno, "Cannot parse field '%s' as millisec duration", s)
