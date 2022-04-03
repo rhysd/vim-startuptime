@@ -1,0 +1,42 @@
+release:
+  draft: false
+  prerelease: true
+
+# No dependencies in this repo
+#
+# before:
+#   hooks:
+#     - go mod download
+
+builds:
+  - id: macos
+    goos: [darwin]
+    goarch: [amd64, arm64]
+
+  - id: linux
+    goos: [linux]
+    goarch: [386, arm, amd64, arm64]
+
+  - id: windows
+    goos: [windows]
+    goarch: [amd64, arm64]
+
+  - id: freebsd
+    goos: [freebsd]
+    goarch: [386, amd64]
+
+archives:
+  - <<: &archives_defaults
+      files:
+        - README.md
+        - LICENSE
+    id: nix
+    builds: [macos, linux, freebsd]
+    format: tar.gz
+  - <<: *archives_defaults
+    id: windows
+    builds: [windows]
+    format: zip
+
+changelog:
+  skip: true
