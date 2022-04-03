@@ -10,7 +10,14 @@ import (
 )
 
 func isNeovimPath(vimpath string) bool {
-	return strings.HasSuffix(vimpath, "nvim") || strings.HasSuffix(vimpath, "nvim.exe")
+	suff := strings.TrimSuffix(vimpath, ".exe")
+	if strings.HasSuffix(suff, "nvim") {
+		return true
+	}
+	if strings.HasSuffix(suff, "lvim") {
+		return true
+	}
+	return false
 }
 
 func runVim(vimpath string, extra []string, args ...string) error {
