@@ -128,6 +128,40 @@ times in msec
 				},
 			},
 		},
+		{
+			"lua for neovim (#2)",
+			[]string{
+				"021.963  000.003: parsing arguments",
+				"023.515  000.278  000.278: require('vim.shared')",
+				"023.699  000.101  000.101: require('vim._meta')",
+			},
+			&measurement{
+				time.Duration(23699) * time.Microsecond,
+				[]*measurementEntry{
+					{
+						false,
+						time.Duration(21963) * time.Microsecond,
+						time.Duration(3) * time.Microsecond,
+						time.Duration(0),
+						"parsing arguments",
+					},
+					{
+						true,
+						time.Duration(23515) * time.Microsecond,
+						time.Duration(278) * time.Microsecond,
+						time.Duration(278) * time.Microsecond,
+						"require('vim.shared')",
+					},
+					{
+						true,
+						time.Duration(23699) * time.Microsecond,
+						time.Duration(101) * time.Microsecond,
+						time.Duration(101) * time.Microsecond,
+						"require('vim._meta')",
+					},
+				},
+			},
+		},
 	} {
 		t.Run(tc.what, func(t *testing.T) {
 			content := []byte(header + strings.Join(tc.lines, "\n") + "\n")
@@ -233,13 +267,19 @@ func TestParseErrors(t *testing.T) {
 		{
 			what:  "script name is not existing",
 			lines: append(header, "198.369  000.161  000.161: sourcing"),
+			msg:   "Script name is missing",
+			line:  7,
+		},
+		{
+			what:  "empty description",
+			lines: append(header, "198.369  000.161  000.161:"),
 			msg:   "Too few fields",
 			line:  7,
 		},
 		{
 			what:  "'sourcing' is missing",
 			lines: append(header, "198.369  000.161  000.161: /foo/bar.vim foo"),
-			msg:   "'sourcing' token is expected but got '/foo/bar.vim'",
+			msg:   "'sourcing' token or 'require(...)' token is expected but got '/foo/bar.vim'",
 			line:  7,
 		},
 	} {

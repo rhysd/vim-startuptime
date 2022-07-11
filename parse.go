@@ -51,7 +51,7 @@ func parseStartuptimeEntity(line string, lineno uint) (*measurementEntry, error)
 	}
 
 	e.script = true
-	if len(ss) < 5 {
+	if len(ss) < 4 {
 		return nil, parseErrorAt(lineno, "Failed to parse script measurement line '%s'. Too few fields", line)
 	}
 
@@ -61,11 +61,17 @@ func parseStartuptimeEntity(line string, lineno uint) (*measurementEntry, error)
 	}
 	e.self = d
 
-	if ss[3] != "sourcing" {
-		return nil, parseErrorAt(lineno, "'sourcing' token is expected but got '%s'", ss[3])
+	if ss[3] == "sourcing" {
+		e.name = strings.Join(ss[4:], " ")
+		if e.name == "" {
+			return nil, parseErrorAt(lineno, "Failed to parse script measurement line '%s'. Script name is missing", line)
+		}
+	} else if strings.HasPrefix(ss[3], "require(") {
+		e.name = strings.Join(ss[3:], " ")
+	} else {
+		return nil, parseErrorAt(lineno, "'sourcing' token or 'require(...)' token is expected but got '%s'", ss[3])
 	}
 
-	e.name = strings.Join(ss[4:], " ")
 	return e, nil
 }
 
