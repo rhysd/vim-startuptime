@@ -1,7 +1,15 @@
+<a name="v1.3.0"></a>
+# [v1.3.0](https://github.com/rhysd/vim-startuptime/releases/tag/v1.3.0) - 11 Jul 2022
+
+- Support Lua `require('...')` as script source. It was recently [introduced to Neovim](https://github.com/neovim/neovim/pull/19267). (#2)
+
+[Changes][v1.3.0]
+
+
 <a name="v1.2.0"></a>
 # [v1.2.0](https://github.com/rhysd/vim-startuptime/releases/tag/v1.2.0) - 03 Apr 2022
 
-- Add `-verbose` flag to outputs the progress of measurements to stderr
+- Add `-verbose` flag to output the progress of measurements to stderr
 - Add support for [LunarVim](https://www.lunarvim.org/) (thanks @runar-rkmedia, #1)
 - Build binaries with the latest Go compiler 1.18.0
 
@@ -25,6 +33,7 @@ First release :tada:
 [Changes][v1.0.0]
 
 
+[v1.3.0]: https://github.com/rhysd/vim-startuptime/compare/v1.2.0...v1.3.0
 [v1.2.0]: https://github.com/rhysd/vim-startuptime/compare/v1.1.0...v1.2.0
 [v1.1.0]: https://github.com/rhysd/vim-startuptime/compare/v1.0.0...v1.1.0
 [v1.0.0]: https://github.com/rhysd/vim-startuptime/tree/v1.0.0
