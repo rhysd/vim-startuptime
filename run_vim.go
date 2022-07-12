@@ -34,6 +34,11 @@ func runVim(vimpath string, extra []string, args ...string) error {
 	cmd := exec.Command(vimpath, a...)
 	out, err := cmd.CombinedOutput()
 	if err != nil {
+		for i, b := range out {
+			if b == '\n' || b == '\r' {
+				out[i] = ' '
+			}
+		}
 		return fmt.Errorf("failed to run %q with args %v: %w. Output: %s", vimpath, a, err, string(out))
 	}
 	return nil
