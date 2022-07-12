@@ -38,7 +38,7 @@ func TestCollectMeasurementsVimStartError(t *testing.T) {
 			if err == nil {
 				t.Fatal("No error occurred")
 			}
-			if !strings.Contains(err.Error(), "Failed to run \""+path+"\" with args [--foo") {
+			if !strings.Contains(err.Error(), "failed to run \""+path+"\" with args [--foo") {
 				t.Fatal("Unexpected error:", err.Error())
 			}
 		})
@@ -104,24 +104,24 @@ func TestSummarizeStartuptimeError(t *testing.T) {
 		msg       string
 	}{
 		{
-			"No total time",
+			"no total time",
 			&collectedMeasurements{
 				total: []time.Duration{},
 				entries: map[string][]time.Duration{
 					"/foo/bar": []time.Duration{time.Duration(110)},
 				},
 			},
-			"No total time was collected",
+			"no total time was collected",
 		},
 		{
-			"No entry profile result",
+			"no entry profile result",
 			&collectedMeasurements{
 				total: []time.Duration{time.Duration(110)},
 				entries: map[string][]time.Duration{
 					"$VIM/vimrc": []time.Duration{},
 				},
 			},
-			"No profile was collected for '$VIM/vimrc'",
+			"no profile was collected for '$VIM/vimrc'",
 		},
 	} {
 		t.Run(tc.what, func(t *testing.T) {

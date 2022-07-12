@@ -34,7 +34,7 @@ func runVim(vimpath string, extra []string, args ...string) error {
 	cmd := exec.Command(vimpath, a...)
 	out, err := cmd.CombinedOutput()
 	if err != nil {
-		return fmt.Errorf("Failed to run %q with args %v: %s. Output: %s", vimpath, a, err, string(out))
+		return fmt.Errorf("failed to run %q with args %v: %w. Output: %s", vimpath, a, err, string(out))
 	}
 	return nil
 }
@@ -47,7 +47,7 @@ func runVimStartuptime(vimpath, tmpdir string, id int, extra []string) (*os.File
 
 	f, err := os.Open(outfile)
 	if err != nil {
-		return nil, fmt.Errorf("Could not open --startuptime result file '%s': %v", outfile, err)
+		return nil, fmt.Errorf("could not open --startuptime result file '%s': %w", outfile, err)
 	}
 	return f, nil
 }

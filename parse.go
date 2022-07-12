@@ -10,7 +10,7 @@ import (
 )
 
 func parseErrorAt(lineno uint, format string, args ...interface{}) error {
-	s := fmt.Sprintf("Parse error at line:%d: %s", lineno, format)
+	s := fmt.Sprintf("parse error at line:%d: %s", lineno, format)
 	return fmt.Errorf(s, args...)
 }
 
@@ -18,7 +18,7 @@ func parseDuration(s string, lineno uint) (time.Duration, error) {
 	s = strings.TrimSuffix(s, ":")
 	f, err := strconv.ParseFloat(s, 64)
 	if err != nil {
-		return time.Duration(0), parseErrorAt(lineno, "Cannot parse field '%s' as millisec duration", s)
+		return time.Duration(0), parseErrorAt(lineno, "cannot parse field '%s' as millisec duration", s)
 	}
 	return time.Duration(f*1000) * time.Microsecond, nil
 }
@@ -28,7 +28,7 @@ func parseStartuptimeEntity(line string, lineno uint) (*measurementEntry, error)
 
 	ss := strings.Fields(line)
 	if len(ss) <= 2 {
-		return nil, parseErrorAt(lineno, "Lack of fields: '%s'", line)
+		return nil, parseErrorAt(lineno, "lack of fields: '%s'", line)
 	}
 
 	d, err := parseDuration(ss[0], lineno)
@@ -52,7 +52,7 @@ func parseStartuptimeEntity(line string, lineno uint) (*measurementEntry, error)
 
 	e.script = true
 	if len(ss) < 4 {
-		return nil, parseErrorAt(lineno, "Failed to parse script measurement line '%s'. Too few fields", line)
+		return nil, parseErrorAt(lineno, "failed to parse script measurement line '%s'. too few fields", line)
 	}
 
 	d, err = parseDuration(ss[2], lineno)
@@ -64,7 +64,7 @@ func parseStartuptimeEntity(line string, lineno uint) (*measurementEntry, error)
 	if ss[3] == "sourcing" {
 		e.name = strings.Join(ss[4:], " ")
 		if e.name == "" {
-			return nil, parseErrorAt(lineno, "Failed to parse script measurement line '%s'. Script name is missing", line)
+			return nil, parseErrorAt(lineno, "failed to parse script measurement line '%s'. script name is missing", line)
 		}
 	} else if strings.HasPrefix(ss[3], "require(") {
 		e.name = strings.Join(ss[3:], " ")
@@ -95,7 +95,7 @@ func parseStartuptime(file *os.File) (*measurement, error) {
 	}
 
 	if len(m.entries) == 0 {
-		return nil, fmt.Errorf("Broken --startuptime output while parsing file %s", file.Name())
+		return nil, fmt.Errorf("broken --startuptime output while parsing file %s. no entry was parsed", file.Name())
 	}
 	m.elapsedTotal = m.entries[len(m.entries)-1].elapsed
 

@@ -23,13 +23,13 @@ func TestPrintSummary(t *testing.T) {
 					time.Duration(100) * time.Millisecond,
 				},
 				[]entrySummary{
-					entrySummary{
+					{
 						"/foo/bar.vim",
 						time.Duration(12345) * time.Microsecond,
 						time.Duration(13334) * time.Microsecond,
 						time.Duration(11112) * time.Microsecond,
 					},
-					entrySummary{
+					{
 						"$VIM/vimrc",
 						time.Duration(1234) * time.Microsecond,
 						time.Duration(1334) * time.Microsecond,
@@ -58,13 +58,13 @@ func TestPrintSummary(t *testing.T) {
 					time.Duration(10) * time.Millisecond,
 				},
 				[]entrySummary{
-					entrySummary{
+					{
 						"/foo/bar.vim",
 						time.Duration(5678) * time.Microsecond,
 						time.Duration(7890) * time.Microsecond,
 						time.Duration(1234) * time.Microsecond,
 					},
-					entrySummary{
+					{
 						"$VIM/vimrc",
 						time.Duration(1234) * time.Microsecond,
 						time.Duration(2345) * time.Microsecond,

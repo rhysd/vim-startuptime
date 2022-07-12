@@ -19,13 +19,13 @@ func collectMeasurements(opts *options) (*collectedMeasurements, error) {
 	}
 	for i := uint(0); i < opts.warmup; i++ {
 		if err := runVim(opts.vimPath, opts.extraArgs); err != nil {
-			return nil, fmt.Errorf("Failed while warmup: %v", err)
+			return nil, fmt.Errorf("error while warmup: %w", err)
 		}
 	}
 
 	dir, err := ioutil.TempDir("", "__vim_startuptime_")
 	if err != nil {
-		return nil, fmt.Errorf("Failed to open temporary directory: %v", err)
+		return nil, fmt.Errorf("failed to open temporary directory: %w", err)
 	}
 	defer os.RemoveAll(dir)
 
@@ -80,12 +80,12 @@ func summarizeStartuptime(collected *collectedMeasurements, verbose bool) (*meas
 	summary := &measurementSummary{}
 	summary.sortedEntries = make([]entrySummary, 0, len(collected.entries))
 	if len(collected.total) == 0 {
-		return nil, fmt.Errorf("No total time was collected")
+		return nil, fmt.Errorf("no total time was collected")
 	}
 	summary.total = summarizeEntry("Total", collected.total)
 	for n, ds := range collected.entries {
 		if len(ds) == 0 {
-			return nil, fmt.Errorf("No profile was collected for '%s'", n)
+			return nil, fmt.Errorf("no profile was collected for '%s'", n)
 		}
 		summary.sortedEntries = append(summary.sortedEntries, summarizeEntry(n, ds))
 	}

@@ -228,12 +228,12 @@ func TestParseErrors(t *testing.T) {
 		{
 			what:  "empty file",
 			lines: []string{""},
-			msg:   "Broken --startuptime output while parsing file",
+			msg:   "broken --startuptime output while parsing file",
 		},
 		{
 			what:  "empty line",
 			lines: append(header, ""),
-			msg:   "Lack of fields: ''",
+			msg:   "lack of fields: ''",
 			line:  7,
 		},
 		{
@@ -243,37 +243,37 @@ func TestParseErrors(t *testing.T) {
 				"",
 				"000.190  000.182: Allocated generic buffers",
 			),
-			msg:  "Lack of fields: ''",
+			msg:  "lack of fields: ''",
 			line: 8,
 		},
 		{
 			what:  "invalid float at elapsed time",
 			lines: append(header, "00-.008  000.008: --- VIM STARTING ---"),
-			msg:   "Cannot parse field '00-.008' as millisec duration",
+			msg:   "cannot parse field '00-.008' as millisec duration",
 			line:  7,
 		},
 		{
 			what:  "invalid float at self+source",
 			lines: append(header, "000.008  000.a08: --- VIM STARTING ---"),
-			msg:   "Cannot parse field '000.a08' as millisec duration",
+			msg:   "cannot parse field '000.a08' as millisec duration",
 			line:  7,
 		},
 		{
 			what:  "invalid float at self",
 			lines: append(header, "198.369  000.161  000.!61: sourcing /foo/bar.vim"),
-			msg:   "Cannot parse field '000.!61' as millisec duration",
+			msg:   "cannot parse field '000.!61' as millisec duration",
 			line:  7,
 		},
 		{
 			what:  "script name is not existing",
 			lines: append(header, "198.369  000.161  000.161: sourcing"),
-			msg:   "Script name is missing",
+			msg:   "script name is missing",
 			line:  7,
 		},
 		{
 			what:  "empty description",
 			lines: append(header, "198.369  000.161  000.161:"),
-			msg:   "Too few fields",
+			msg:   "too few fields",
 			line:  7,
 		},
 		{
@@ -304,7 +304,7 @@ func TestParseErrors(t *testing.T) {
 			if !strings.Contains(msg, tc.msg) {
 				t.Fatalf("Unexpected error. '%s' is not in '%s'", tc.msg, msg)
 			}
-			if tc.line != 0 && !strings.Contains(msg, fmt.Sprintf("Parse error at line:%d:", tc.line)) {
+			if tc.line != 0 && !strings.Contains(msg, fmt.Sprintf("parse error at line:%d:", tc.line)) {
 				t.Fatal("Error should occur at line", tc.line, "(error:", msg, ")")
 			}
 		})
