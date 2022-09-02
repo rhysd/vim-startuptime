@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"reflect"
 	"strings"
@@ -11,7 +10,7 @@ import (
 )
 
 func TestParseOK(t *testing.T) {
-	tmpfile, err := ioutil.TempFile("", "__test_parse_ok")
+	tmpfile, err := os.CreateTemp("", "__test_parse_ok")
 	if err != nil {
 		panic(err)
 	}
@@ -165,7 +164,7 @@ times in msec
 	} {
 		t.Run(tc.what, func(t *testing.T) {
 			content := []byte(header + strings.Join(tc.lines, "\n") + "\n")
-			if err := ioutil.WriteFile(tmpname, content, 0644); err != nil {
+			if err := os.WriteFile(tmpname, content, 0644); err != nil {
 				panic(err)
 			}
 
@@ -200,7 +199,7 @@ times in msec
 }
 
 func TestParseErrors(t *testing.T) {
-	tmpfile, err := ioutil.TempFile("", "__test_parse_errors")
+	tmpfile, err := os.CreateTemp("", "__test_parse_errors")
 	if err != nil {
 		panic(err)
 	}
@@ -285,7 +284,7 @@ func TestParseErrors(t *testing.T) {
 	} {
 		t.Run(tc.what, func(t *testing.T) {
 			content := []byte(strings.Join(tc.lines, "\n") + "\n")
-			if err := ioutil.WriteFile(tmpname, content, 0644); err != nil {
+			if err := os.WriteFile(tmpname, content, 0644); err != nil {
 				panic(err)
 			}
 

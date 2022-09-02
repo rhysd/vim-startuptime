@@ -1,7 +1,6 @@
 package main
 
 import (
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"reflect"
@@ -28,7 +27,7 @@ func TestUsage(t *testing.T) {
 		os.Stderr = saved
 	}()
 
-	dir, err := ioutil.TempDir("", "__vim_usage_test")
+	dir, err := os.MkdirTemp("", "__vim_usage_test")
 	if err != nil {
 		panic(err)
 	}
@@ -45,7 +44,7 @@ func TestUsage(t *testing.T) {
 
 	temp.Close()
 
-	bytes, err := ioutil.ReadFile(tempName)
+	bytes, err := os.ReadFile(tempName)
 	if err != nil {
 		panic(err)
 	}

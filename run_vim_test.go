@@ -1,7 +1,7 @@
 package main
 
 import (
-	"io/ioutil"
+	"io"
 	"os"
 	"path/filepath"
 	"strings"
@@ -11,7 +11,7 @@ import (
 func TestRunVimOK(t *testing.T) {
 	for _, exe := range []string{"vim", "nvim"} {
 		t.Run(exe, func(t *testing.T) {
-			dir, err := ioutil.TempDir("", "__vim_run_test_")
+			dir, err := os.MkdirTemp("", "__vim_run_test_")
 			if err != nil {
 				panic(err)
 			}
@@ -27,7 +27,7 @@ func TestRunVimOK(t *testing.T) {
 			if fname != "3" {
 				t.Error("Invalid result file name", fname, "Wanted '3'")
 			}
-			bytes, err := ioutil.ReadAll(f)
+			bytes, err := io.ReadAll(f)
 			if err != nil {
 				t.Fatal("Cannot open startup result file", err)
 			}
@@ -42,7 +42,7 @@ func TestRunVimOK(t *testing.T) {
 func TestStartError(t *testing.T) {
 	for _, exe := range []string{"vim", "nvim"} {
 		t.Run(exe, func(t *testing.T) {
-			dir, err := ioutil.TempDir("", "__vim_run_test_error_")
+			dir, err := os.MkdirTemp("", "__vim_run_test_error_")
 			if err != nil {
 				panic(err)
 			}

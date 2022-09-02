@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"sort"
 	"time"
@@ -23,7 +22,7 @@ func collectMeasurements(opts *options) (*collectedMeasurements, error) {
 		}
 	}
 
-	dir, err := ioutil.TempDir("", "__vim_startuptime_")
+	dir, err := os.MkdirTemp("", "__vim_startuptime_")
 	if err != nil {
 		return nil, fmt.Errorf("failed to open temporary directory: %w", err)
 	}
