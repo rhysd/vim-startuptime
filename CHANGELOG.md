@@ -1,7 +1,7 @@
 <a name="v1.3.0"></a>
 # [v1.3.0](https://github.com/rhysd/vim-startuptime/releases/tag/v1.3.0) - 11 Jul 2022
 
-- Support Lua `require('...')` as script source. It was recently [introduced to Neovim](https://github.com/neovim/neovim/pull/19267). (#2)
+- Support Lua `require('...')` as script source. It was recently [introduced to Neovim](https://github.com/neovim/neovim/pull/19267). ([#2](https://github.com/rhysd/vim-startuptime/issues/2))
 
 [Changes][v1.3.0]
 
@@ -10,7 +10,7 @@
 # [v1.2.0](https://github.com/rhysd/vim-startuptime/releases/tag/v1.2.0) - 03 Apr 2022
 
 - Add `-verbose` flag to output the progress of measurements to stderr
-- Add support for [LunarVim](https://www.lunarvim.org/) (thanks @runar-rkmedia, #1)
+- Add support for [LunarVim](https://www.lunarvim.org/) (thanks [@runar-rkmedia](https://github.com/runar-rkmedia), [#1](https://github.com/rhysd/vim-startuptime/issues/1))
 - Build binaries with the latest Go compiler 1.18.0
 
 [Changes][v1.2.0]
@@ -19,8 +19,8 @@
 <a name="v1.1.0"></a>
 # [v1.1.0](https://github.com/rhysd/vim-startuptime/releases/tag/v1.1.0) - 12 Feb 2020
 
-- **New:** `-warmup {count}` option was added for warm-up phase. Before collecting the results, `vim-startuptime` runs the Vim/Neovim process `{count}` times
-- **Dev:** Migrate CI to GitHub Actions
+- New: `-warmup {count}` option was added for warm-up phase. Before collecting the results, `vim-startuptime` runs the Vim/Neovim process `{count}` times
+- Dev: Migrate CI to GitHub Actions
 
 [Changes][v1.1.0]
 
