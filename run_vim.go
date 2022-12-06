@@ -5,6 +5,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"runtime"
 	"strconv"
 	"strings"
 )
@@ -27,6 +28,13 @@ func runVim(vimpath string, extra []string, args ...string) error {
 		a = append(a, "--headless")
 	} else {
 		a = append(a, "--not-a-term")
+	}
+	if runtime.GOOS == "windows" {
+		if p, err := exec.LookPath(vimpath); err == nil {
+			if filepath.Base(p) == "vim.exe" {
+				a = append(a, "-e")
+			}
+		}
 	}
 	a = append(a, "-c", "qall!")
 	a = append(a, args...)
