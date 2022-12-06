@@ -1,3 +1,13 @@
+<a name="v1.3.1"></a>
+# [v1.3.1](https://github.com/rhysd/vim-startuptime/releases/tag/v1.3.1) - 06 Dec 2022
+
+- Fix Vim does not exit on Windows by adding `-e` option (thanks [@mattn](https://github.com/mattn), [#3](https://github.com/rhysd/vim-startuptime/issues/3))
+- Replace newlines in error messages with spaces and avoid capitalizing error messages following the Go's error message convention
+- Remove deprecated `io/util` imports
+
+[Changes][v1.3.1]
+
+
 <a name="v1.3.0"></a>
 # [v1.3.0](https://github.com/rhysd/vim-startuptime/releases/tag/v1.3.0) - 11 Jul 2022
 
@@ -33,6 +43,7 @@ First release :tada:
 [Changes][v1.0.0]
 
 
+[v1.3.1]: https://github.com/rhysd/vim-startuptime/compare/v1.3.0...v1.3.1
 [v1.3.0]: https://github.com/rhysd/vim-startuptime/compare/v1.2.0...v1.3.0
 [v1.2.0]: https://github.com/rhysd/vim-startuptime/compare/v1.1.0...v1.2.0
 [v1.1.0]: https://github.com/rhysd/vim-startuptime/compare/v1.0.0...v1.1.0
