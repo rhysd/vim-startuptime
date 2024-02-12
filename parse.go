@@ -86,7 +86,12 @@ func parseStartuptime(file *os.File) (*measurement, error) {
 			l++
 			continue
 		}
-		e, err := parseStartuptimeEntity(s.Text(), l)
+		t := s.Text()
+		if t == "" {
+			// Neovim appends an extra empty line at the end of input (#4)
+			continue
+		}
+		e, err := parseStartuptimeEntity(t, l)
 		if err != nil {
 			return nil, err
 		}
