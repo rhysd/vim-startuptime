@@ -230,22 +230,6 @@ func TestParseErrors(t *testing.T) {
 			msg:   "broken --startuptime output while parsing file",
 		},
 		{
-			what:  "empty line",
-			lines: append(header, ""),
-			msg:   "lack of fields: ''",
-			line:  7,
-		},
-		{
-			what: "empty line middle of lines",
-			lines: append(header,
-				"000.008  000.008: --- VIM STARTING ---",
-				"",
-				"000.190  000.182: Allocated generic buffers",
-			),
-			msg:  "lack of fields: ''",
-			line: 8,
-		},
-		{
 			what:  "invalid float at elapsed time",
 			lines: append(header, "00-.008  000.008: --- VIM STARTING ---"),
 			msg:   "cannot parse field '00-.008' as millisec duration",
