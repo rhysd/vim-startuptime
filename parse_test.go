@@ -293,3 +293,60 @@ func TestParseErrors(t *testing.T) {
 		})
 	}
 }
+
+func TestParseSkipNeovimTUIProcessProfile(t *testing.T) {
+	f, err := os.CreateTemp("", "__test_skip_tui_profile")
+	if err != nil {
+		panic(err)
+	}
+	n := f.Name()
+	defer func() {
+		f.Close()
+		os.Remove(n)
+	}()
+
+	lines :=
+		`--- Startup times for process: Primary/TUI ---
+
+times in msec
+ clock   self+sourced   self:  sourced script
+ clock   elapsed:              other lines
+
+000.001  000.001: --- NVIM STARTING ---
+these
+lines
+should be skipped
+
+--- Startup times for process: Embedded ---
+
+times in msec
+ clock   self+sourced   self:  sourced script
+ clock   elapsed:              other lines
+
+000.000  000.000: --- NVIM STARTING ---
+`
+
+	if _, err := f.WriteString(lines); err != nil {
+		panic(err)
+	}
+
+	f.Close()
+	f, err = os.Open(n)
+	if err != nil {
+		panic(err)
+	}
+	defer f.Close()
+
+	m, err := parseStartuptime(f)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if len(m.entries) != 1 {
+		t.Fatal("wanted one entry but got:", m.entries)
+	}
+	e := m.entries[0]
+	if e.name != "--- NVIM STARTING ---" {
+		t.Fatalf(`wanted "--- NVIM STARTING ---" as entry but got %q`, e.name)
+	}
+}

@@ -81,20 +81,35 @@ func parseStartuptime(file *os.File) (*measurement, error) {
 	s := bufio.NewScanner(file)
 	l := uint(1)
 	for s.Scan() {
-		if l < 7 {
+		if l == 1 {
+			// Skip TUI process profile and only measure embedded process (#4)
+			// Related PR in Neovim https://github.com/neovim/neovim/pull/26790
+			if s.Text() == "--- Startup times for process: Primary/TUI ---" {
+				for s.Scan() {
+					if s.Text() == "--- Startup times for process: Embedded ---" {
+						break
+					}
+				}
+			}
+			l++
+			continue
+		} else if l < 7 {
 			// Skip header
 			l++
 			continue
 		}
+
 		t := s.Text()
 		if t == "" {
 			// Neovim appends an extra empty line at the end of input (#4)
 			continue
 		}
+
 		e, err := parseStartuptimeEntity(t, l)
 		if err != nil {
 			return nil, err
 		}
+
 		m.entries = append(m.entries, e)
 		l++
 	}
