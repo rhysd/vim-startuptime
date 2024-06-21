@@ -3,9 +3,9 @@ Better `vim --startuptime`
 [![CI Badge][]][CI]
 [![Codecov Status][]][Codecov]
 
-`vim-startuptime` is a small Go program to measure startup time of Vim. This program aims to be an
-alternative of `--startuptime` option of Vim, which measures the startup time metrics to allow vimmers
-to optimize Vim's startup.
+`vim-startuptime` is a small Go program to measure startup time of Vim or Neovim. This program aims
+to be an alternative of `--startuptime` option of Vim, which measures the startup time metrics to
+allow vimmers to optimize Vim's startup.
 
 After warm-up, `vim-startuptime` runs `vim --startuptime` multiple times internally and collects the
 metrics from the results (e.g. average time for loading each plugin's scripts). The summary calculated
@@ -22,8 +22,8 @@ Download an executable from [a release page](https://github.com/rhysd/vim-startu
 If you want to install the latest stable version, please run following command. Go toolchain is
 necessary for running the command.
 
-```
-$ go install github.com/rhysd/vim-startuptime@latest
+```sh
+go install github.com/rhysd/vim-startuptime@latest
 ```
 
 
@@ -39,8 +39,8 @@ $ go install github.com/rhysd/vim-startuptime@latest
 
 Just run the command with no argument.
 
-```
-$ vim-startuptime
+```sh
+vim-startuptime
 ```
 
 By default, it tries to run `vim` and `:quit` immediately 10 times, collects the results and outputs
@@ -92,8 +92,8 @@ Please see `-help` option to know the command options.
 By running `vim-startuptime`, now you know which script file takes time to run. What you should do
 next is `:profile`.
 
-```
-$ vim --cmd 'profile start profile.log' --cmd 'profile! file /path/to/slow_script.vim' -c quit
+```sh
+vim --cmd 'profile start profile.log' --cmd 'profile! file /path/to/slow_script.vim' -c quit
 ```
 
 Profiled results are dumped to `profile.log`. Please check it. In log file, `:set ft=vim` would help
