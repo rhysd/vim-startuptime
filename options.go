@@ -16,7 +16,7 @@ type options struct {
 	verbose   bool
 }
 
-const usageHeader = `Usage: vim-startuptime [flags] [-- vim options]
+const usageHeader = `Usage: vim-startuptime [flags] [-- vim args]
 
   vim-startuptime is a command which provides better --startuptime option of Vim.
   It starts Vim with --startuptime multiple times, collects the results and

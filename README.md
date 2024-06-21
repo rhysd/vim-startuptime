@@ -76,11 +76,11 @@ If you want to run with Neovim, please specify `-vimpath` option as follows:
 $ vim-startuptime -vimpath nvim
 ```
 
-If you want to give some options to underlying `vim` command executions, please specify them after
-`--` argument in command line as follows:
+If you want to give some options or arguments to underlying `vim` command executions, please specify
+them after `--` argument in command line as follows:
 
 ```
-$ vim-startuptime -- --cmd DoSomeCommand
+$ vim-startuptime -- --cmd DoSomeCommand path/to/some/file
 ```
 
 Please see `-help` option to know the command options.
