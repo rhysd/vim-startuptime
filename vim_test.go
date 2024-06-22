@@ -39,7 +39,7 @@ func TestRunVimOK(t *testing.T) {
 	}
 }
 
-func TestStartError(t *testing.T) {
+func TestRunVimError(t *testing.T) {
 	for _, exe := range []string{"vim", "nvim"} {
 		t.Run(exe, func(t *testing.T) {
 			dir, err := os.MkdirTemp("", "__vim_run_test_error_")

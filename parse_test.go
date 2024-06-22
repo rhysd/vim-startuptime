@@ -3,11 +3,14 @@ package main
 import (
 	"fmt"
 	"os"
-	"reflect"
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/google/go-cmp/cmp"
 )
+
+var parseCmpOpts = cmp.AllowUnexported(measurement{}, measurementEntry{})
 
 func TestParseOK(t *testing.T) {
 	tmpfile, err := os.CreateTemp("", "__test_parse_ok")
@@ -179,20 +182,8 @@ times in msec
 				t.Fatal(err)
 			}
 
-			w := tc.expected
-			if m.elapsedTotal != w.elapsedTotal {
-				t.Error("Want total", w.elapsedTotal, "but have", m.elapsedTotal)
-			}
-
-			if len(w.entries) != len(m.entries) {
-				t.Fatal("Want #entries", w.entries, "but have", m.entries)
-			}
-			for i := range w.entries {
-				have := m.entries[i]
-				want := w.entries[i]
-				if !reflect.DeepEqual(have, want) {
-					t.Errorf("%dth entry not match. Want '%+v', but have '%+v'", i, want, have)
-				}
+			if !cmp.Equal(m, tc.expected, parseCmpOpts) {
+				t.Fatal(cmp.Diff(m, tc.expected, parseCmpOpts))
 			}
 		})
 	}

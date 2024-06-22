@@ -1,11 +1,14 @@
 package main
 
 import (
-	"reflect"
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/google/go-cmp/cmp"
 )
+
+var measureCmpOpts = cmp.AllowUnexported(collectedMeasurements{}, measurementSummary{}, entrySummary{})
 
 func TestCollectMeasurementsOK(t *testing.T) {
 	for _, path := range []string{"vim", "nvim"} {
@@ -108,8 +111,8 @@ func TestSummarizeStartuptime(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if !reflect.DeepEqual(want, have) {
-		t.Fatal("Unexpected average value", have, ", wanted", want)
+	if !cmp.Equal(want, have, measureCmpOpts) {
+		t.Fatal(cmp.Diff(want, have, measureCmpOpts))
 	}
 }
 

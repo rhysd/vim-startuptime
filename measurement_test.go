@@ -5,6 +5,8 @@ import (
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestPrintSummary(t *testing.T) {
@@ -94,14 +96,8 @@ func TestPrintSummary(t *testing.T) {
 			}
 			lines = lines[:len(lines)-1]
 
-			if len(lines) != len(tc.want) {
-				t.Fatalf("Number of lines does not match: %d v.s. %d. ('%s' v.s. '%s')", len(tc.want), len(lines), tc.want, lines)
-			}
-			for i := range lines {
-				want, have := tc.want[i], lines[i]
-				if have != want {
-					t.Errorf("Line %d does not match: Wanted '%s' but have '%s'", i+1, want, have)
-				}
+			if !cmp.Equal(lines, tc.want) {
+				t.Fatal(cmp.Diff(lines, tc.want))
 			}
 		})
 	}
