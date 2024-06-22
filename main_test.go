@@ -21,7 +21,7 @@ func TestParseExtraArgs(t *testing.T) {
 	}
 }
 
-func TestUsage(t *testing.T) {
+func TestProgramUsageOutput(t *testing.T) {
 	saved := os.Stderr
 	defer func() {
 		os.Stderr = saved
