@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"io"
 	"os"
 )
 
@@ -23,25 +24,40 @@ const usageHeader = `Usage: vim-startuptime [flags] [-- VIMARGS...]
 
 Flags:`
 
-func usage() {
-	fmt.Fprintln(os.Stderr, usageHeader)
-	flag.PrintDefaults()
+func parseOptions(out io.Writer, args []string) (*options, int) {
+	fs := flag.NewFlagSet(args[0], flag.ContinueOnError)
+	fs.SetOutput(out)
+
+	o := &options{}
+	fs.UintVar(&o.count, "count", 10, "How many times measure startup time")
+	fs.StringVar(&o.vimPath, "vimpath", "vim", "Command to run Vim or Neovim")
+	fs.BoolVar(&o.script, "script", false, "Only collects script loading times")
+	fs.UintVar(&o.warmup, "warmup", 1, "How many times start Vim at warm-up phase")
+	fs.BoolVar(&o.verbose, "verbose", false, "Verbose output to stderr while measurements")
+	fs.Usage = func() {
+		fmt.Fprintln(out, usageHeader)
+		fs.PrintDefaults()
+	}
+
+	if err := fs.Parse(args[1:]); err != nil {
+		if err == flag.ErrHelp {
+			return nil, 0
+		}
+		fmt.Fprintf(out, "error while parsing command line arguments: %s\n", err)
+		return nil, 1
+	}
+
+	o.extraArgs = fs.Args()
+	return o, -1
 }
 
 func main() {
-	opts := options{}
+	opts, code := parseOptions(os.Stderr, os.Args)
+	if code >= 0 {
+		os.Exit(code)
+	}
 
-	flag.UintVar(&opts.count, "count", 10, "How many times measure startup time")
-	flag.StringVar(&opts.vimPath, "vimpath", "vim", "Command to run Vim or Neovim")
-	flag.BoolVar(&opts.script, "script", false, "Only collects script loading times")
-	flag.UintVar(&opts.warmup, "warmup", 1, "How many times start Vim at warm-up phase")
-	flag.BoolVar(&opts.verbose, "verbose", false, "Verbose output to stderr while measurements")
-
-	flag.Usage = usage
-	flag.Parse()
-	opts.extraArgs = flag.Args()
-
-	collected, err := collectMeasurements(&opts)
+	collected, err := collectMeasurements(opts)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
