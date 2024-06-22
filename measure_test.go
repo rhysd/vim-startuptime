@@ -10,7 +10,12 @@ import (
 func TestCollectMeasurementsOK(t *testing.T) {
 	for _, path := range []string{"vim", "nvim"} {
 		t.Run(path, func(t *testing.T) {
-			opts := &options{count: 2, vimPath: path, extraArgs: []string{"-N", "-u", "NONE"}}
+			opts := &options{
+				count:     2,
+				vimPath:   path,
+				warmup:    1,
+				extraArgs: []string{"-N", "-u", "NONE"},
+			}
 			collected, err := collectMeasurements(opts)
 			if err != nil {
 				t.Fatal(err)
@@ -45,6 +50,17 @@ func TestCollectMeasurementsVimStartError(t *testing.T) {
 	}
 }
 
+func TestCollectMeasurementsVimWarmupError(t *testing.T) {
+	opts := &options{warmup: 1, count: 1, vimPath: "vim", extraArgs: []string{"--foo"}}
+	_, err := collectMeasurements(opts)
+	if err == nil {
+		t.Fatal("No error occurred")
+	}
+	if !strings.Contains(err.Error(), "error while warm-up") {
+		t.Fatal("Unexpected error:", err.Error())
+	}
+}
+
 func TestSummarizeStartuptime(t *testing.T) {
 	collected := &collectedMeasurements{
 		total: []time.Duration{
@@ -53,12 +69,12 @@ func TestSummarizeStartuptime(t *testing.T) {
 			time.Duration(30000),
 		},
 		entries: map[string][]time.Duration{
-			"/foo/bar": []time.Duration{
+			"/foo/bar": {
 				time.Duration(110),
 				time.Duration(130),
 				time.Duration(120),
 			},
-			"$VIM/vimrc": []time.Duration{
+			"$VIM/vimrc": {
 				time.Duration(1500),
 				time.Duration(1400),
 				time.Duration(1300),
@@ -73,13 +89,13 @@ func TestSummarizeStartuptime(t *testing.T) {
 			time.Duration(10000),
 		},
 		sortedEntries: []entrySummary{
-			entrySummary{
+			{
 				"$VIM/vimrc",
 				time.Duration(1400),
 				time.Duration(1500),
 				time.Duration(1300),
 			},
-			entrySummary{
+			{
 				"/foo/bar",
 				time.Duration(120),
 				time.Duration(130),
@@ -108,7 +124,7 @@ func TestSummarizeStartuptimeError(t *testing.T) {
 			&collectedMeasurements{
 				total: []time.Duration{},
 				entries: map[string][]time.Duration{
-					"/foo/bar": []time.Duration{time.Duration(110)},
+					"/foo/bar": {time.Duration(110)},
 				},
 			},
 			"no total time was collected",
@@ -118,7 +134,7 @@ func TestSummarizeStartuptimeError(t *testing.T) {
 			&collectedMeasurements{
 				total: []time.Duration{time.Duration(110)},
 				entries: map[string][]time.Duration{
-					"$VIM/vimrc": []time.Duration{},
+					"$VIM/vimrc": {},
 				},
 			},
 			"no profile was collected for '$VIM/vimrc'",

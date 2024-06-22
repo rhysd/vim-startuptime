@@ -18,13 +18,13 @@ func collectMeasurements(opts *options) (*collectedMeasurements, error) {
 	}
 	for i := uint(0); i < opts.warmup; i++ {
 		if err := runVim(opts.vimPath, opts.extraArgs); err != nil {
-			return nil, fmt.Errorf("error while warmup: %w", err)
+			return nil, fmt.Errorf("error while warm-up: %w", err)
 		}
 	}
 
 	dir, err := os.MkdirTemp("", "__vim_startuptime_")
 	if err != nil {
-		return nil, fmt.Errorf("failed to open temporary directory: %w", err)
+		return nil, fmt.Errorf("failed to make a temporary directory: %w", err)
 	}
 	defer os.RemoveAll(dir)
 
