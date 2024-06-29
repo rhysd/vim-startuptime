@@ -51,25 +51,31 @@ func parseOptions(out io.Writer, args []string) (*options, int) {
 	return o, -1
 }
 
+func measure(opts *options, out io.Writer) error {
+	collected, err := collectMeasurements(opts)
+	if err != nil {
+		return err
+	}
+
+	summary, err := summarizeStartuptime(collected, opts.verbose)
+	if err != nil {
+		return err
+	}
+
+	fmt.Fprintf(out, "Extra options: %v\n", opts.extraArgs)
+	fmt.Fprintf(out, "Measured: %d times\n\n", opts.count)
+	summary.print(out)
+	return nil
+}
+
 func main() {
 	opts, code := parseOptions(os.Stderr, os.Args)
 	if code >= 0 {
 		os.Exit(code)
 	}
 
-	collected, err := collectMeasurements(opts)
-	if err != nil {
+	if err := measure(opts, os.Stdout); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
-
-	summary, err := summarizeStartuptime(collected, opts.verbose)
-	if err != nil {
-		fmt.Fprintln(os.Stderr, err)
-		os.Exit(1)
-	}
-
-	fmt.Printf("Extra options: %v\n", opts.extraArgs)
-	fmt.Printf("Measured: %d times\n\n", opts.count)
-	summary.print(os.Stdout)
 }
