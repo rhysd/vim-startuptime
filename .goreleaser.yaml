@@ -1,12 +1,8 @@
+version: 2
+
 release:
   draft: false
   prerelease: true
-
-# No dependencies in this repo
-#
-# before:
-#   hooks:
-#     - go mod download
 
 builds:
   - id: macos
@@ -47,4 +43,4 @@ archives:
     format: zip
 
 changelog:
-  skip: true
+  disable: true
