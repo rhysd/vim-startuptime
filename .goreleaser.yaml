@@ -12,18 +12,26 @@ builds:
   - id: macos
     goos: [darwin]
     goarch: [amd64, arm64]
+    env:
+      - CGO_ENABLED=0
 
   - id: linux
     goos: [linux]
     goarch: [386, arm, amd64, arm64]
+    env:
+      - CGO_ENABLED=0
 
   - id: windows
     goos: [windows]
     goarch: [amd64, arm64]
+    env:
+      - CGO_ENABLED=0
 
   - id: freebsd
     goos: [freebsd]
     goarch: [386, amd64]
+    env:
+      - CGO_ENABLED=0
 
 archives:
   - <<: &archives_defaults

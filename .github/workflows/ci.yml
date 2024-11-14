@@ -18,6 +18,8 @@ jobs:
         with:
           neovim: true
       - run: go build
+        env:
+          CGO_ENABLED: '0'
       - run: go test -v -race -coverprofile coverage.txt
       - name: Upload coverage to codecov
         uses: codecov/codecov-action@v4
